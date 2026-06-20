@@ -1,0 +1,25 @@
+body { background: #0d1117 !important; }
+.swagger-ui { background: #0d1117; }
+.swagger-ui .topbar { background: #161b22; border-bottom: 1px solid #30363d; }
+.swagger-ui .topbar .download-url-wrapper .select-label select { border: 1px solid #30363d; background: #21262d; color: #e6edf3; }
+.swagger-ui .info .title { color: #e6edf3; }
+.swagger-ui .info p, .swagger-ui .info li, .swagger-ui .info table td, .swagger-ui .info table th { color: #8b949e; }
+.swagger-ui .scheme-container { background: #161b22; border: 1px solid #30363d; box-shadow: none; }
+.swagger-ui .opblock-tag { color: #e6edf3; border-bottom: 1px solid #30363d; }
+.swagger-ui .opblock { border: 1px solid #30363d !important; border-radius: 8px; margin: 8px 0; }
+.swagger-ui .opblock.opblock-get    { background: rgba(63,185,80,.05);  border-left: 3px solid #3fb950 !important; }
+.swagger-ui .opblock.opblock-post   { background: rgba(88,166,255,.05); border-left: 3px solid #58a6ff !important; }
+.swagger-ui .opblock.opblock-delete { background: rgba(247,129,102,.05);border-left: 3px solid #f78166 !important; }
+.swagger-ui .opblock.opblock-patch  { background: rgba(255,166,87,.05); border-left: 3px solid #ffa657 !important; }
+.swagger-ui .opblock .opblock-summary { background: transparent; }
+.swagger-ui .opblock .opblock-summary-description { color: #8b949e; }
+.swagger-ui .opblock-body pre { background: #0d1117; color: #a8d8ff; }
+.swagger-ui section.models { background: #161b22; border: 1px solid #30363d; }
+.swagger-ui .model-box { background: #21262d; }
+.swagger-ui .btn { background: #21262d; color: #e6edf3; border: 1px solid #30363d; }
+.swagger-ui .btn.execute { background: #58a6ff; color: #0d1117; border: none; }
+.swagger-ui input[type=text], .swagger-ui textarea, .swagger-ui select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; }
+.swagger-ui .response-col_status { color: #3fb950; }
+.swagger-ui table thead tr td, .swagger-ui table thead tr th { color: #e6edf3; border-bottom: 1px solid #30363d; }
+.swagger-ui .parameter__name { color: #58a6ff; }
+.swagger-ui .parameter__type { color: #d2a8ff; }

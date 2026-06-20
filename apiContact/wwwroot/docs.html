@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat API — Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .docs-layout { display: grid; grid-template-columns: 240px 1fr; gap: 0; min-height: calc(100vh - 60px); }
+    .docs-sidebar {
+      position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto;
+      background: var(--bg2); border-right: 1px solid var(--border);
+      padding: 1.5rem 1rem;
+    }
+    .docs-sidebar h4 { font-size: .72rem; text-transform: uppercase; letter-spacing:.1em; color: var(--text3); margin: 1.2rem 0 .5rem; padding: 0 .5rem; }
+    .docs-sidebar a {
+      display: flex; align-items: center; gap: 8px;
+      padding: .45rem .75rem; border-radius: var(--radius-sm);
+      font-size: .85rem; color: var(--text2); transition: all .15s;
+      text-decoration: none !important;
+    }
+    .docs-sidebar a:hover { background: var(--bg3); color: var(--text); }
+    .docs-sidebar a.active { background: rgba(88,166,255,.1); color: var(--accent); }
+    .docs-main { padding: 3rem; max-width: 860px; }
+    .docs-main h1 { font-size: 2rem; font-weight: 800; margin-bottom: .5rem; }
+    .docs-main h2 { font-size: 1.35rem; font-weight: 700; margin: 2.5rem 0 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+    .docs-main h3 { font-size: 1rem; font-weight: 600; margin: 1.5rem 0 .6rem; color: var(--text2); }
+    .docs-main p { color: var(--text2); line-height: 1.8; margin-bottom: 1rem; }
+    .docs-main ul { color: var(--text2); padding-left: 1.5rem; margin-bottom: 1rem; }
+    .docs-main li { margin-bottom: .3rem; line-height: 1.7; }
+    code { font-family: var(--mono); font-size: .82em; background: var(--bg3); padding: 2px 6px; border-radius: 4px; color: var(--accent4); }
+    .param-table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: .85rem; }
+    .param-table th { background: var(--bg3); color: var(--text); padding: .6rem 1rem; text-align: left; font-weight: 600; font-size: .75rem; text-transform: uppercase; letter-spacing:.06em; }
+    .param-table td { padding: .65rem 1rem; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+    .param-table tr:last-child td { border: none; }
+    .param-table .param-name { color: var(--accent); font-family: var(--mono); font-size: .82rem; }
+    .param-table .param-type { color: var(--accent4); font-family: var(--mono); font-size: .78rem; }
+    .param-req { color: var(--accent3); font-size: .68rem; font-weight: 700; }
+    .response-block { margin: 1rem 0; }
+    .response-label { font-size: .75rem; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing:.08em; margin-bottom: .4rem; }
+    .info-box {
+      background: rgba(88,166,255,.06); border: 1px solid rgba(88,166,255,.25);
+      border-radius: var(--radius-sm); padding: 1rem 1.2rem; margin: 1rem 0;
+      font-size: .85rem; color: var(--text2);
+    }
+    .info-box strong { color: var(--accent); }
+    .warn-box {
+      background: rgba(255,166,87,.06); border: 1px solid rgba(255,166,87,.25);
+      border-radius: var(--radius-sm); padding: 1rem 1.2rem; margin: 1rem 0;
+      font-size: .85rem; color: var(--text2);
+    }
+    .warn-box strong { color: var(--accent5); }
+    @media(max-width:768px){
+      .docs-layout { grid-template-columns: 1fr; }
+      .docs-sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+      .docs-main { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><div class="dot"></div>Chat API</div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/docs.html" class="active">Docs</a>
+    <a href="/swagger">Swagger <span class="nav-badge">UI</span></a>
+    <a href="/health">Health</a>
+  </div>
+</nav>
+
+<div class="docs-layout">
+  <!-- SIDEBAR -->
+  <aside class="docs-sidebar">
+    <h4>Getting Started</h4>
+    <a href="#overview">Overview</a>
+    <a href="#base-url">Base URL</a>
+    <a href="#response-format">Response Format</a>
+    <a href="#errors">Error Handling</a>
+
+    <h4>Users</h4>
+    <a href="#users-list">List Users</a>
+    <a href="#users-get">Get User</a>
+    <a href="#users-create">Create User</a>
+    <a href="#users-update">Update User</a>
+    <a href="#users-status">Set Status</a>
+    <a href="#users-delete">Delete User</a>
+
+    <h4>Rooms</h4>
+    <a href="#rooms-list">List Rooms</a>
+    <a href="#rooms-by-user">By User</a>
+    <a href="#rooms-get">Get Room</a>
+    <a href="#rooms-create">Create Room</a>
+    <a href="#rooms-members">Add Member</a>
+    <a href="#rooms-remove">Remove Member</a>
+
+    <h4>Messages</h4>
+    <a href="#msg-history">Message History</a>
+    <a href="#msg-send">Send Message</a>
+    <a href="#msg-edit">Edit Message</a>
+    <a href="#msg-delete">Delete Message</a>
+    <a href="#msg-read">Mark Read</a>
+    <a href="#msg-unread">Unread Count</a>
+
+    <h4>Files</h4>
+    <a href="#files-upload">Upload File</a>
+    <a href="#files-delete">Delete File</a>
+
+    <h4>WebSocket</h4>
+    <a href="#ws-connect">Connect</a>
+    <a href="#ws-events">Events Reference</a>
+    <a href="#ws-example">JS Example</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="docs-main">
+    <div class="hero-tag" style="margin-bottom:1rem">API Reference v1</div>
+    <h1>Chat API Documentation</h1>
+    <p>A realtime chat backend with REST endpoints and WebSocket (SignalR) events. All responses follow a standard envelope format.</p>
+
+    <!-- OVERVIEW -->
+    <h2 id="overview">Overview</h2>
+    <div class="grid-4" style="margin-bottom:1.5rem;">
+      <div class="card" style="text-align:center;padding:1rem">
+        <div style="font-size:1.4rem">👤</div><h3 style="font-size:.85rem">Users</h3><p style="font-size:.78rem">Profiles, presence</p>
+      </div>
+      <div class="card" style="text-align:center;padding:1rem">
+        <div style="font-size:1.4rem">💬</div><h3 style="font-size:.85rem">Rooms</h3><p style="font-size:.78rem">Groups, channels</p>
+      </div>
+      <div class="card" style="text-align:center;padding:1rem">
+        <div style="font-size:1.4rem">✉️</div><h3 style="font-size:.85rem">Messages</h3><p style="font-size:.78rem">Send, edit, delete</p>
+      </div>
+      <div class="card" style="text-align:center;padding:1rem">
+        <div style="font-size:1.4rem">📁</div><h3 style="font-size:.85rem">Files</h3><p style="font-size:.78rem">Upload, blob</p>
+      </div>
+    </div>
+
+    <h2 id="base-url">Base URL</h2>
+    <div class="code-block">http://localhost:5000</div>
+    <p>All API routes are prefixed with <code>/api</code>. WebSocket hub is at <code>/hubs/chat</code>.</p>
+
+    <h2 id="response-format">Response Format</h2>
+    <p>Every REST response uses a standard envelope:</p>
+    <div class="code-block" id="resp-fmt">
+{
+  <span class="key">"success"</span>: <span class="num">true</span>,
+  <span class="key">"message"</span>: <span class="str">"Success"</span>,
+  <span class="key">"data"</span>:    <span class="comment">{ ... } or [ ... ]</span>,
+  <span class="key">"total"</span>:   <span class="num">42</span>  <span class="comment">// only on list responses</span>
+}
+    </div>
+
+    <h2 id="errors">Error Handling</h2>
+    <table class="param-table">
+      <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-green">200</span></td><td>OK — success</td></tr>
+        <tr><td><span class="badge badge-blue">201</span></td><td>Created — resource created</td></tr>
+        <tr><td><span class="badge badge-orange">400</span></td><td>Bad Request — validation failed</td></tr>
+        <tr><td><span class="badge badge-orange">404</span></td><td>Not Found — resource missing</td></tr>
+        <tr><td><span class="badge badge-purple">409</span></td><td>Conflict — duplicate resource</td></tr>
+        <tr><td><span class="badge" style="background:rgba(247,129,102,.15);color:#f78166;border:1px solid rgba(247,129,102,.3)">500</span></td><td>Server Error — unexpected failure</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ═══════ USERS ═══════ -->
+    <h2 id="users-list">GET /api/users</h2>
+    <p>Returns all registered users sorted by display name.</p>
+    <div class="response-block">
+      <div class="response-label">Response 200</div>
+      <div class="code-block">{ <span class="key">"success"</span>: <span class="num">true</span>, <span class="key">"data"</span>: [ { <span class="key">"id"</span>:<span class="str">"user_001"</span>, <span class="key">"username"</span>:<span class="str">"alice"</span>, <span class="key">"displayName"</span>:<span class="str">"Alice Johnson"</span>, <span class="key">"isOnline"</span>:<span class="num">true</span> } ], <span class="key">"total"</span>: <span class="num">3</span> }</div>
+    </div>
+
+    <h2 id="users-get">GET /api/users/{id}</h2>
+    <p>Fetch a single user by their ID.</p>
+    <table class="param-table">
+      <thead><tr><th>Param</th><th>Type</th><th>Where</th><th>Description</th></tr></thead>
+      <tbody><tr><td class="param-name">id</td><td class="param-type">string</td><td>path</td><td>User's MongoDB ObjectId or seeded ID <span class="param-req">required</span></td></tr></tbody>
+    </table>
+
+    <h2 id="users-create">POST /api/users</h2>
+    <p>Create a new user. Usernames must be unique.</p>
+    <div class="code-block" id="create-user-body">
+{
+  <span class="key">"username"</span>:    <span class="str">"john_doe"</span>,      <span class="comment">// required, unique</span>
+  <span class="key">"displayName"</span>: <span class="str">"John Doe"</span>,
+  <span class="key">"email"</span>:       <span class="str">"john@example.com"</span>,
+  <span class="key">"avatarUrl"</span>:   <span class="str">"https://..."</span>
+}
+    </div>
+
+    <h2 id="users-update">PATCH /api/users/{id}</h2>
+    <p>Partially update a user profile. All fields are optional.</p>
+    <div class="code-block">
+{ <span class="key">"displayName"</span>: <span class="str">"Johnny"</span>, <span class="key">"avatarUrl"</span>: <span class="str">"https://..."</span>, <span class="key">"isOnline"</span>: <span class="num">true</span> }
+    </div>
+
+    <h2 id="users-status">POST /api/users/{id}/status</h2>
+    <p>Set a user's online/offline status. Also broadcasts <code>UserOnline</code> / <code>UserOffline</code> via WebSocket.</p>
+    <div class="code-block">{ <span class="key">"isOnline"</span>: <span class="num">true</span> }</div>
+
+    <h2 id="users-delete">DELETE /api/users/{id}</h2>
+    <p>Permanently removes a user record.</p>
+
+    <!-- ═══════ ROOMS ═══════ -->
+    <h2 id="rooms-list">GET /api/rooms</h2>
+    <p>Returns all rooms sorted by latest message activity.</p>
+
+    <h2 id="rooms-by-user">GET /api/rooms/user/{userId}</h2>
+    <p>Returns only the rooms that include the given user as a member.</p>
+
+    <h2 id="rooms-get">GET /api/rooms/{id}</h2>
+    <p>Fetch a single room with member IDs and last-message preview.</p>
+
+    <h2 id="rooms-create">POST /api/rooms</h2>
+    <p>Create a new room. <code>type</code> can be <code>0</code> (Direct), <code>1</code> (Group), or <code>2</code> (Channel).</p>
+    <div class="code-block">
+{
+  <span class="key">"name"</span>:       <span class="str">"engineering"</span>,
+  <span class="key">"description"</span>:<span class="str">"Engineering team chat"</span>,
+  <span class="key">"type"</span>:       <span class="num">1</span>,              <span class="comment">// 0=Direct, 1=Group, 2=Channel</span>
+  <span class="key">"memberIds"</span>:  [<span class="str">"user_001"</span>, <span class="str">"user_002"</span>],
+  <span class="key">"createdBy"</span>:  <span class="str">"user_001"</span>
+}
+    </div>
+
+    <h2 id="rooms-members">POST /api/rooms/{id}/members</h2>
+    <p>Add a user to an existing room.</p>
+    <div class="code-block">{ <span class="key">"userId"</span>: <span class="str">"user_003"</span> }</div>
+
+    <h2 id="rooms-remove">DELETE /api/rooms/{id}/members/{userId}</h2>
+    <p>Remove a specific user from a room.</p>
+
+    <!-- ═══════ MESSAGES ═══════ -->
+    <h2 id="msg-history">GET /api/messages/room/{roomId}</h2>
+    <p>Returns paginated message history, ordered oldest → newest.</p>
+    <table class="param-table">
+      <thead><tr><th>Query Param</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="param-name">limit</td><td class="param-type">int</td><td>50</td><td>Messages per page</td></tr>
+        <tr><td class="param-name">skip</td><td class="param-type">int</td><td>0</td><td>Offset for pagination</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="msg-send">POST /api/messages</h2>
+    <p>Send a message. Automatically broadcasts <code>ReceiveMessage</code> to all room WebSocket subscribers and updates the room's last-message preview.</p>
+    <div class="code-block">
+{
+  <span class="key">"roomId"</span>:   <span class="str">"room_001"</span>,
+  <span class="key">"senderId"</span>: <span class="str">"user_001"</span>,
+  <span class="key">"content"</span>:  <span class="str">"Hello world! 👋"</span>,
+  <span class="key">"type"</span>:     <span class="num">0</span>              <span class="comment">// 0=Text, 1=Image, 2=File, 3=System</span>
+}
+    </div>
+
+    <h2 id="msg-edit">PATCH /api/messages/{id}</h2>
+    <p>Edit message content. Emits <code>MessageEdited</code> to room subscribers. Only the original sender can edit.</p>
+    <div class="code-block">{ <span class="key">"content"</span>: <span class="str">"Updated message text"</span> }</div>
+
+    <h2 id="msg-delete">DELETE /api/messages/{id}</h2>
+    <p>Soft-deletes a message (content replaced with <code>[Message deleted]</code>). Emits <code>MessageDeleted</code> to room.</p>
+
+    <h2 id="msg-read">POST /api/messages/{id}/read</h2>
+    <p>Mark a message as read by a specific user.</p>
+    <div class="code-block">{ <span class="key">"userId"</span>: <span class="str">"user_001"</span> }</div>
+
+    <h2 id="msg-unread">GET /api/messages/room/{roomId}/unread?userId={userId}</h2>
+    <p>Returns the count of unread messages in a room for a user (excludes their own messages).</p>
+
+    <!-- ═══════ FILES ═══════ -->
+    <h2 id="files-upload">POST /api/files/upload</h2>
+    <p>Upload a file using <code>multipart/form-data</code>. Max 20 MB. Optionally post directly to a room.</p>
+    <div class="warn-box"><strong>⚠️ Allowed types:</strong> .jpg, .jpeg, .png, .gif, .webp, .pdf, .txt, .zip, .mp4, .mp3</div>
+    <table class="param-table">
+      <thead><tr><th>Form Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="param-name">file</td><td class="param-type">file</td><td>The file to upload <span class="param-req">required</span></td></tr>
+        <tr><td class="param-name">roomId</td><td class="param-type">string</td><td>If provided, creates a message in this room</td></tr>
+        <tr><td class="param-name">senderId</td><td class="param-type">string</td><td>If provided with roomId, sets message sender</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="files-delete">DELETE /api/files/{fileName}</h2>
+    <p>Delete a previously uploaded file by its stored filename (UUID + extension).</p>
+
+    <!-- ═══════ WEBSOCKET ═══════ -->
+    <h2 id="ws-connect">WebSocket — Connect</h2>
+    <p>The WebSocket hub is powered by <strong>ASP.NET Core SignalR</strong>. Connect using the <code>@microsoft/signalr</code> JS client or any SignalR-compatible client.</p>
+    <div class="info-box"><strong>Endpoint:</strong> <code>/hubs/chat</code><br/><strong>Optional query:</strong> <code>?userId=user_001</code> — triggers online-status broadcast on connect/disconnect.</div>
+
+    <h2 id="ws-events">WebSocket Events Reference</h2>
+    <h3>Client → Server (invoke)</h3>
+    <table class="param-table">
+      <thead><tr><th>Method</th><th>Arguments</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="param-name">JoinRoom</td><td><code>roomId</code></td><td>Subscribe to all messages in a room</td></tr>
+        <tr><td class="param-name">LeaveRoom</td><td><code>roomId</code></td><td>Unsubscribe from a room</td></tr>
+        <tr><td class="param-name">Typing</td><td><code>roomId, userId, displayName</code></td><td>Broadcast typing indicator</td></tr>
+        <tr><td class="param-name">StopTyping</td><td><code>roomId, userId</code></td><td>Stop typing indicator</td></tr>
+        <tr><td class="param-name">Ping</td><td>—</td><td>Test connection; server replies with Pong</td></tr>
+      </tbody>
+    </table>
+    <h3>Server → Client (on)</h3>
+    <table class="param-table">
+      <thead><tr><th>Event</th><th>Payload</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td class="param-name">ReceiveMessage</td><td><code>{ id, roomId, senderId, senderName, content, type, timestamp }</code></td><td>New message in room</td></tr>
+        <tr><td class="param-name">MessageEdited</td><td><code>{ id, content }</code></td><td>Message was edited</td></tr>
+        <tr><td class="param-name">MessageDeleted</td><td><code>{ id, roomId }</code></td><td>Message was deleted</td></tr>
+        <tr><td class="param-name">UserTyping</td><td><code>{ roomId, userId, displayName }</code></td><td>User is typing</td></tr>
+        <tr><td class="param-name">UserStoppedTyping</td><td><code>{ roomId, userId }</code></td><td>User stopped typing</td></tr>
+        <tr><td class="param-name">UserOnline</td><td><code>{ userId, connectedAt }</code></td><td>User connected</td></tr>
+        <tr><td class="param-name">UserOffline</td><td><code>{ userId, disconnectedAt }</code></td><td>User disconnected</td></tr>
+        <tr><td class="param-name">UserJoinedRoom</td><td><code>{ roomId, connectionId, joinedAt }</code></td><td>Someone joined a room</td></tr>
+        <tr><td class="param-name">UserLeftRoom</td><td><code>{ roomId, connectionId, leftAt }</code></td><td>Someone left a room</td></tr>
+        <tr><td class="param-name">Pong</td><td><code>{ timestamp }</code></td><td>Reply to Ping</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="ws-example">WebSocket JS Example</h2>
+    <div class="code-block" id="ws-full">
+<span class="comment">// Install: npm install @microsoft/signalr</span>
+<span class="key">import</span> * <span class="key">as</span> signalR <span class="key">from</span> <span class="str">"@microsoft/signalr"</span>;
+
+<span class="key">const</span> conn = <span class="key">new</span> signalR.HubConnectionBuilder()
+  .withUrl(<span class="str">"/hubs/chat?userId=user_001"</span>)
+  .withAutomaticReconnect()
+  .configureLogging(signalR.LogLevel.Information)
+  .build();
+
+<span class="comment">// Listen for new messages</span>
+conn.on(<span class="str">"ReceiveMessage"</span>, (msg) => {
+  console.log(<span class="str">`[</span><span class="key">${msg.senderName}</span><span class="str">] </span><span class="key">${msg.content}</span><span class="str">`</span>);
+});
+
+<span class="comment">// Listen for typing indicator</span>
+conn.on(<span class="str">"UserTyping"</span>, ({ displayName }) => {
+  console.log(<span class="str">`</span><span class="key">${displayName}</span><span class="str"> is typing…`</span>);
+});
+
+<span class="comment">// Start and join a room</span>
+<span class="key">await</span> conn.start();
+<span class="key">await</span> conn.invoke(<span class="str">"JoinRoom"</span>, <span class="str">"room_001"</span>);
+
+<span class="comment">// Send typing indicator</span>
+<span class="key">await</span> conn.invoke(<span class="str">"Typing"</span>, <span class="str">"room_001"</span>, <span class="str">"user_001"</span>, <span class="str">"Alice"</span>);
+
+<span class="comment">// Send message via REST (triggers WS broadcast automatically)</span>
+<span class="key">await</span> fetch(<span class="str">"/api/messages"</span>, {
+  method: <span class="str">"POST"</span>,
+  headers: { <span class="str">"Content-Type"</span>: <span class="str">"application/json"</span> },
+  body: JSON.stringify({ roomId: <span class="str">"room_001"</span>, senderId: <span class="str">"user_001"</span>, content: <span class="str">"Hello! 👋"</span> })
+});
+    </div>
+  </main>
+</div>
+
+<footer>
+  <p>Chat API v1 &nbsp;·&nbsp; .NET 9 &nbsp;·&nbsp;
+    <a href="/swagger">Swagger UI</a> &nbsp;·&nbsp;
+    <a href="/">Home</a> &nbsp;·&nbsp;
+    <a href="/health">Health</a>
+  </p>
+</footer>
+
+<script src="/js/main.js"></script>
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('h2[id]');
+  const links = document.querySelectorAll('.docs-sidebar a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+    links.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+</body>
+</html>
