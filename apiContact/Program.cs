@@ -118,6 +118,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix    = "swagger";
     c.DocumentTitle  = "Chat API — Swagger UI";
     c.InjectStylesheet("/css/swagger-custom.css");
+    c.InjectJavascript("/js/swagger-nav.js");
 });
 
 app.UseCors("ChatPolicy");
