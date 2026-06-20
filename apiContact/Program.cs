@@ -20,35 +20,31 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IFeatureService, FeatureService>();
 
-// Configure CORS for Angular app (? must be before builder.Build())
+// Configure CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AngularApp", policy =>
     {
-        policy.WithOrigins("http://localhost:4200", "http://localhost:9887")
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowAnyMethod();
     });
 });
 
+builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
 var app = builder.Build();
 
 // Configure middleware
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Contact API v1");
-        c.RoutePrefix = "swagger"; // serves at /swagger/index.html
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Contact API v1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseCors("AngularApp");
 
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
